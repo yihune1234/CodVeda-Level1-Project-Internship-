@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,4 +86,98 @@
     };
   </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Event</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center; color:#1e3a8a; margin:30px 0">Edit Event</h1>
+
+    <form id="editForm">
+      <input type="hidden" id="eventId">
+      <input type="text" id="title" placeholder="Event Title" required>
+      <input type="date" id="date" required>
+      <input type="text" id="location" placeholder="Location">
+      <textarea id="description" rows="4" placeholder="Description"></textarea>
+      <button type="submit" class="btn">Update Event</button>
+      <a href="index.html" style="margin-left:20px;">Cancel</a>
+    </form>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get('id');
+
+    // Load event data
+    fetch(`http://localhost:5000/api/events`)
+      .then(res => res.json())
+      .then(events => {
+        const event = events.find(e => e.id === eventId);
+        if (event) {
+          document.getElementById('eventId').value = event.id;
+          document.getElementById('title').value = event.title;
+          document.getElementById('date').value = event.date;
+          document.getElementById('location').value = event.location;
+          document.getElementById('description').value = event.description || '';
+        }
+      });
+
+    // Submit update
+    document.getElementById('editForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const updatedEvent = {
+        title: document.getElementById('title').value,
+        date: document.getElementById('date').value,
+        location: document.getElementById('location').value,
+        description: document.getElementById('description').value
+      };
+
+      const res = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedEvent)
+      });
+
+      if (res.ok) {
+        alert('Event updated successfully!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Error updating event');
+      }
+    };
+  </script>
+  <script>
+  // Dark Mode Toggle
+  const toggle = document.getElementById('theme-toggle');
+  const icon = document.getElementById('mode-icon');
+
+  // Check saved theme
+  if (localStorage.getItem('theme') === 'dark' || 
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark');
+    icon.textContent = 'Light Mode';
+  } else {
+    icon.textContent = 'Dark Mode';
+  }
+
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    
+    if (document.body.classList.contains('dark')) {
+      icon.textContent = 'Light Mode';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      icon.textContent = 'Dark Mode';
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
+</body>
+>>>>>>> dcc9448db6899d9b9f3876004658d0f7c399dc51
 </html>
