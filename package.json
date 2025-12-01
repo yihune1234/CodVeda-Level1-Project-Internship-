@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "echo \"No build step needed\"",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
