@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Event - Event Manager</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header style="margin-bottom: 2rem; padding: 2rem;">
+      <h1 style="font-size: 3rem;">Edit Event</h1>
+      <a href="index.html" class="btn" style="background: #6c5ce7;">Back to Events</a>
+    </header>
+
+    <div class="form-container">
+      <form id="editForm">
+        <input type="hidden" id="eventId">
+        
+        <div class="input-group">
+          <label>Event Title <span class="required">*</span></label>
+          <input type="text" id="title" required>
+        </div>
+
+        <div class="input-group">
+          <label>Date <span class="required">*</span></label>
+          <input type="date" id="date" required>
+        </div>
+
+        <div class="input-group">
+          <label>Location</label>
+          <input type="text" id="location">
+        </div>
+
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="description" rows="5"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Update Event
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const eventId = params.get('id');
+
+    // Load event data
+    fetch('https://codveda-level1-project-internship-kq7f.onrender.com/api/events')
+      .then(r => r.json())
+      .then(events => {
+        const event = events.find(e => e.id === eventId);
+        if (event) {
+          document.getElementById('eventId').value = event.id;
+          document.getElementById('title').value = event.title;
+          document.getElementById('date').value = event.date;
+          document.getElementById('location').value = event.location;
+          document.getElementById('description').value = event.description || '';
+        }
+      });
+
+    // Submit update
+    document.getElementById('editForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const updated = {
+        title: document.getElementById('title').value,
+        date: document.getElementById('date').value,
+        location: document.getElementById('location').value || "TBA",
+        description: document.getElementById('description').value
+      };
+
+      const res = await fetch(`https://codveda-level1-project-internship-kq7f.onrender.com/api/events/${eventId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+
+      if (res.ok) {
+        alert('Event updated successfully!');
+        window.location.href = 'index.html';
+      }
+    };
+  </script>
+</body>
+</html>
