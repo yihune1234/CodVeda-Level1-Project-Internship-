@@ -1,0 +1,26 @@
+[
+  {
+    "id": "f3e87629-74f5-45e4-8d92-b168154fefca",
+    "title": "Photography Contest",
+    "date": "2025-12-12",
+    "location": "Art Room",
+    "description": "Theme: Nature & Campus Life. Cash prizes for top 3!",
+    "createdAt": "2025-12-01T18:03:40.068Z"
+  },
+  {
+    "id": "1ff31d4d-233c-4aa6-af38-eeb18494045c",
+    "title": "colloid ",
+    "date": "2025-12-17",
+    "location": "TBA",
+    "description": "",
+    "createdAt": "2025-12-01T18:12:18.325Z"
+  },
+  {
+    "id": "94902243-d926-423a-99b0-272e114b1627",
+    "title": "yihune events",
+    "date": "2025-12-03",
+    "location": "TBA",
+    "description": "",
+    "createdAt": "2025-12-01T18:22:42.091Z"
+  }
+]
