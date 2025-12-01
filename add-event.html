@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Event</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center; color:#1e3a8a; margin:30px 0">Create New Event</h1>
+
+    <form id="eventForm">
+      <input type="text" id="title" placeholder="Event Title" required>
+      <input type="date" id="date" required>
+      <input type="text" id="location" placeholder="Location (optional)">
+      <textarea id="description" rows="4" placeholder="Description (optional)"></textarea>
+      <button type="submit" class="btn">Create Event</button>
+      <a href="index.html" style="margin-left:20px;">← Back</a>
+    </form>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('eventForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const event = {
+        title: document.getElementById('title').value,
+        date: document.getElementById('date').value,
+        location: document.getElementById('location').value,
+        description: document.getElementById('description').value
+      };
+
+      const res = await fetch('http://localhost:5000/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
+      });
+
+      if (res.ok) {
+        alert('Event created!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Error creating event');
+      }
+    };
+  </script>
+  <script>
+  // Dark Mode Toggle
+  const toggle = document.getElementById('theme-toggle');
+  const icon = document.getElementById('mode-icon');
+
+  // Check saved theme
+  if (localStorage.getItem('theme') === 'dark' || 
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark');
+    icon.textContent = 'Light Mode';
+  } else {
+    icon.textContent = 'Dark Mode';
+  }
+
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    
+    if (document.body.classList.contains('dark')) {
+      icon.textContent = 'Light Mode';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      icon.textContent = 'Dark Mode';
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
+</body>
+</html>
